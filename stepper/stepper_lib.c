@@ -2,7 +2,9 @@
 
 #define STEPS 4
 #define STEP_DELAY delayMicroseconds(2000)
-#define LIMIT_DIST 200
+#define LIMIT_X 100
+#define LIMIT_Y 600
+#define AREA_SIDE 3000
 
 typedef struct {
     int STEP[STEPS];
@@ -41,20 +43,38 @@ void step(Stepper * stepper, bool forward) {
     }
 }
 
-void origin_axis(Stepper * stepper) {
+void origin_axis(Stepper * stepper, unsigned limit) {
     while (!digitalRead(limit_switch)) {
         step(stepper, false);
         STEP_DELAY;
     }
 
-    for (unsigned i = 0; i < LIMIT_DIST; ++i) {
+    for (unsigned i = 0; i < limit; ++i) {
         step(stepper, true);
         STEP_DELAY;
     }
 }
 
 void origin(Axes2D * axes) {
-    origin_axis(&axes->X);
-    origin_axis(&axes->Y);
+    origin_axis(&axes->X, LIMIT_X);
+    origin_axis(&axes->Y, LIMIT_Y);
     axes->pos = (Pos2D) {0, 0};
+
+    for (unsigned i = 0; i < AREA_SIDE; ++i) {
+        step(&axes->Y, true);
+        step(&axes->X, true);
+        STEP_DELAY;
+    }
+    // for (unsigned i = 0; i < AREA_SIDE; ++i) {
+    //     step(&axes->Y, true);
+    //     STEP_DELAY;
+    // }
+    // for (unsigned i = 0; i < AREA_SIDE; ++i) {
+    //     step(&axes->X, false);
+    //     STEP_DELAY;
+    // }
+    // for (unsigned i = 0; i < AREA_SIDE; ++i) {
+    //     step(&axes->Y, false);
+    //     STEP_DELAY;
+    // }
 }
