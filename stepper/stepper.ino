@@ -1,7 +1,7 @@
 #include "stepper_lib.c"
 
 void setup() {
-    stepper_setup();
+    Axes2D axes = stepper_setup();
     origin(&axes);
 }
 
