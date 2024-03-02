@@ -70,3 +70,7 @@ void apply(Axes2D * axes, Step x, Step y) {
         STEP_DELAY;
     }
 }
+
+void limit_wait() {
+    while (!digitalRead(LIMIT_PIN));
+}

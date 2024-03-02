@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Arduino.h"
-
 // Drawing area side length
 #define AREA_SIDE 3000
 
@@ -32,3 +30,5 @@ Axes2D stepper_setup();
 void origin(Axes2D * axes);
 
 void apply(Axes2D * axes, Step x, Step y);
+
+void limit_wait();
