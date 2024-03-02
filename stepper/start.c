@@ -8,7 +8,6 @@
 
 #define FOR(len) ((t <= len || ((t -= len) && 0)))
 #define DIR(a) (a < 0 ? BACKWARD : (a == 0 ? STAND : FORWARD))
-#define CIR(x, y) ((x - ac) * (x - ac) + (y - ac) * (y - ac))
 
 Step2D square_func(long t, unsigned x, unsigned y) {
     static unsigned origin = 0;
@@ -45,27 +44,29 @@ Step2D square_func(long t, unsigned x, unsigned y) {
     return STEP_STOP;
 }
 
-Step2D inscribed_circle_func(long t, unsigned x, unsigned y) {
-    static const double precision = 100000;
-    static const double rad = TWO_PI / precision;
+// Step2D inscribed_circle_func(long t, unsigned x, unsigned y) {
+//     static const double ac =  (double) AREA_SIDE / 2;
+//     static const double precision = 90000;
+//     static const double rad = TWO_PI / precision;
 
-    if (FOR(precision)) {
-        double a = (double) t * rad;
-        double b = round((double) AREA_SIDE / 2 * (1 + sin(a)) - x);
-        if (b != 0) {
-            return STEP(DIR(b), STAND);
-        }
-        double c = round((double) AREA_SIDE / 2 * (1 - cos(a)) - y);
-        return STEP(STAND, DIR(c));
-    }
+//     if (FOR(precision)) {
+//         double a = (double) t * rad;
+//         double b = round(ac * (1 + sin(a)) - x);
+//         double c = round(ac * (1 - cos(a)) - y);
+//         return STEP(DIR(b), DIR(c));
+//     }
 
-    return STEP_STOP;
-}
+//     return STEP_STOP;
+// }
 
 void start() {
     Axes2D axes = stepper_setup();
     origin(&axes);
 
-    apply_function(&axes, &square_func);
-    apply_function(&axes, &inscribed_circle_func);
+    // apply_function(&axes, &square_func);
+    // apply_function(&axes, &inscribed_circle_func);
+
+    go_to(&axes, AREA_SIDE / 2, AREA_SIDE / 2);
+    go_to(&axes, AREA_SIDE, 0);
+    go_to(&axes, 0, AREA_SIDE);
 }

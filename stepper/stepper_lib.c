@@ -4,13 +4,13 @@
 
 // Arduino steppers pins
 #define LIMIT_PIN DD7
-#define STEPPER_X_PINS { DD5, DD4, DD3, DD2 }
-#define STEPPER_Y_PINS { A0, A1, A2, A3 }
+#define STEPPER_X_PINS { A0, A1, A2, A3 }
+#define STEPPER_Y_PINS { DD5, DD4, DD3, DD2 }
 
 // Stepper constants
 #define STEP_DELAY delay(2)
-#define LIMIT_X 100
-#define LIMIT_Y 600
+#define LIMIT_X 600
+#define LIMIT_Y 100
 
 Axes2D stepper_setup() {
     pinMode(LIMIT_PIN, INPUT_PULLUP);
