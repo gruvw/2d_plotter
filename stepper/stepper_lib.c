@@ -1,6 +1,6 @@
 #include "stepper_lib.h"
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 // Arduino steppers pins
 #define LIMIT_PIN DD7
