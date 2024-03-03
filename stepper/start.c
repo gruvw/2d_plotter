@@ -9,8 +9,8 @@
 #define FOR(len) ((t <= len || ((t -= len) && 0)))
 #define DIR(a) (a < 0 ? BACKWARD : (a == 0 ? STAND : FORWARD))
 
-Step2D square_func(long t, unsigned x, unsigned y) {
-    static unsigned origin = 0;
+Step2D square_func(long t, int x, int y) {
+    static int origin = 0;
 
     if (FOR(AREA_SIDE / 2)) {
         return STEP(FORWARD, STAND);
@@ -44,7 +44,7 @@ Step2D square_func(long t, unsigned x, unsigned y) {
     return STEP_STOP;
 }
 
-// Step2D inscribed_circle_func(long t, unsigned x, unsigned y) {
+// Step2D inscribed_circle_func(long t, int x, int y) {
 //     static const double ac =  (double) AREA_SIDE / 2;
 //     static const double precision = 90000;
 //     static const double rad = TWO_PI / precision;
@@ -66,7 +66,13 @@ void start() {
     // apply_function(&axes, &square_func);
     // apply_function(&axes, &inscribed_circle_func);
 
-    go_to(&axes, AREA_SIDE / 2, AREA_SIDE / 2);
-    go_to(&axes, AREA_SIDE, 0);
-    go_to(&axes, 0, AREA_SIDE);
+    move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
+    move_line_to(&axes, 0, AREA_SIDE / 2);
+    move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
+    move_line_to(&axes, 0, 0);
+
+    move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    move_line_to(&axes, AREA_SIDE / 2, 0);
+    move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    move_line_to(&axes, 0, 0);
 }

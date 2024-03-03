@@ -20,14 +20,19 @@ Axes2D stepper_setup() {
     return (Axes2D) {X, Y};
 }
 
+int mod(int a, int b) {
+    int r = a % b;
+    return r < 0 ? r + b : r;
+}
+
 void step(Stepper * stepper, bool forward) {
     stepper->pos += forward ? 1 : -1;
     for (int i = 0; i < _STEPS; i++) {
-        digitalWrite(stepper->STEP_PINS[i], (stepper->pos % _STEPS - i) == 0);
+        digitalWrite(stepper->STEP_PINS[i], (mod(stepper->pos, _STEPS) - i) == 0);
     }
 }
 
-void origin_stepper(Stepper * stepper, unsigned limit) {
+void origin_stepper(Stepper * stepper, int limit) {
     // Walk till limit switch hit
     while (!digitalRead(LIMIT_PIN)) {
         step(stepper, false);
@@ -35,7 +40,7 @@ void origin_stepper(Stepper * stepper, unsigned limit) {
     }
 
     // Walk back to relieve switch + go to axis origin
-    for (unsigned i = 0; i < limit; ++i) {
+    for (int i = 0; i < limit; ++i) {
         step(stepper, true);
         STEP_DELAY;
     }

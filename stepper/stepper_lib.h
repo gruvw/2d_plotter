@@ -9,7 +9,7 @@
 
 typedef struct {
     const int STEP_PINS[_STEPS];
-    unsigned pos;
+    int pos;
 } Stepper;
 
 typedef struct {
