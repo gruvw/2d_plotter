@@ -81,19 +81,24 @@ void start() {
     // move_line_to(&axes, 0, AREA_SIDE / 2);
     // move_line_to(&axes, AREA_SIDE / 2, 0);
 
-    move_line_to(&axes, AREA_SIDE / 2, 0);
+
+    // move_line_to(&axes, AREA_SIDE / 2, 0);
+    // limit_wait();
+
+    // move_line_to(&axes, AREA_SIDE, 0);
+    // move_line_to(&axes, AREA_SIDE, AREA_SIDE);
+    // move_line_to(&axes, 0, AREA_SIDE);
+    // move_line_to(&axes, 0, 0);
+    // move_line_to(&axes, AREA_SIDE / 2, 0);
+
+    // move_circ(&axes, AREA_SIDE / 2);
+
+    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
+    // move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
+    // move_line_to(&axes, 0, AREA_SIDE / 2);
+    // move_line_to(&axes, AREA_SIDE / 2, 0);
+
+
     limit_wait();
-
-    move_line_to(&axes, AREA_SIDE, 0);
-    move_line_to(&axes, AREA_SIDE, AREA_SIDE);
-    move_line_to(&axes, 0, AREA_SIDE);
-    move_line_to(&axes, 0, 0);
-    move_line_to(&axes, AREA_SIDE / 2, 0);
-
-    move_circ(&axes, AREA_SIDE / 2);
-
-    move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
-    move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
-    move_line_to(&axes, 0, AREA_SIDE / 2);
-    move_line_to(&axes, AREA_SIDE / 2, 0);
+    hilbert(&axes);
 }
