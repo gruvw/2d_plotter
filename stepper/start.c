@@ -66,13 +66,29 @@ void start() {
     // apply_function(&axes, &square_func);
     // apply_function(&axes, &inscribed_circle_func);
 
-    move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
-    move_line_to(&axes, 0, AREA_SIDE / 2);
-    move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
-    move_line_to(&axes, 0, 0);
+    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
+    // move_line_to(&axes, 0, AREA_SIDE / 2);
+    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
+    // move_line_to(&axes, 0, 0);
 
-    move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    // move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    // move_line_to(&axes, AREA_SIDE / 2, 0);
+    // move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    // move_line_to(&axes, 0, 0);
+
+    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
+    // move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
+    // move_line_to(&axes, 0, AREA_SIDE / 2);
+    // move_line_to(&axes, AREA_SIDE / 2, 0);
+
     move_line_to(&axes, AREA_SIDE / 2, 0);
-    move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
+    limit_wait();
+
+    move_line_to(&axes, AREA_SIDE, 0);
+    move_line_to(&axes, AREA_SIDE, AREA_SIDE);
+    move_line_to(&axes, 0, AREA_SIDE);
     move_line_to(&axes, 0, 0);
+    move_line_to(&axes, AREA_SIDE / 2, 0);
+
+    move_circ(&axes, AREA_SIDE / 2);
 }
