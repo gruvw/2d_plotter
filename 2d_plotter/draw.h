@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "stepper_lib.h"
+#include "stepper.h"
 
 typedef struct {
     bool finished;
@@ -16,5 +16,6 @@ typedef struct {
 typedef Step2D (*Function2D)(long t, int x, int y, void * args);
 
 void apply_function(Axes2D * axes, Function2D function, void * args);
-void move_line_to(Axes2D * axes, int dest_x, int dest_y);
-void move_circ(Axes2D * axes, long radius);
+
+void draw_line_to(Axes2D * axes, int dest_x, int dest_y);
+void draw_circ(Axes2D * axes, int radius);

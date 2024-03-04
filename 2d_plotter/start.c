@@ -1,11 +1,8 @@
 #include "start.h"
 
-#include <Arduino.h>
-
-#include "function.h"
+#include "draw.h"
 #include "hilbert.h"
 #include "log.h"
-#include "stepper_lib.h"
 
 #define FOR(len) ((t <= len || ((t -= len) && 0)))
 #define DIR(a) (a < 0 ? BACKWARD : (a == 0 ? STAND : FORWARD))
@@ -100,5 +97,5 @@ void start() {
     // move_line_to(&axes, AREA_SIDE / 2, 0);
 
     limit_wait();
-    hilbert(&axes, AREA_SIDE, 4);
+    draw_hilbert(&axes, AREA_SIDE, 4);
 }

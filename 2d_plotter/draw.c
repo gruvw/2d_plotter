@@ -1,8 +1,6 @@
-#include "function.h"
-#include <limits.h>
+#include "draw.h"
 
-#include "stepper_lib.h"
-#include "log.h"
+#include <limits.h>
 
 #define DIR(a) ((a) < 0 ? BACKWARD : ((a) == 0 ? STAND : FORWARD))
 #define CIR(x, y) apply(axes, DIR((x) - axes->X.pos), DIR((y) - axes->Y.pos));
@@ -17,7 +15,7 @@ void apply_function(Axes2D * axes, Function2D function, void * args) {
     }
 }
 
-void move_line_to(Axes2D * axes, int dest_x, int dest_y) {
+void draw_line_to(Axes2D * axes, int dest_x, int dest_y) {
     int x = axes->X.pos, y = axes->Y.pos;
     const int dx = abs(dest_x - x), dy = abs(dest_y - y);
     const int sx = (x < dest_x) ? 1 : -1, sy = (y < dest_y) ? 1 : -1;
@@ -37,7 +35,7 @@ void move_line_to(Axes2D * axes, int dest_x, int dest_y) {
     }
 }
 
-void draw_circ(Axes2D * axes, int radius, int rev, int xm, int ym, int d_rev) {
+void draw_octant_circ(Axes2D * axes, int radius, int rev, int xm, int ym, int d_rev) {
     if (!d_rev) {
         int x = radius;
         int y = 0;
@@ -103,16 +101,16 @@ void draw_circ(Axes2D * axes, int radius, int rev, int xm, int ym, int d_rev) {
     }
 }
 
-void move_circ(Axes2D * axes, long radius) {
-    draw_circ(axes, radius, 1, 0, 1, 0);
-    draw_circ(axes, radius, 0, 0, 1, 1);
+void draw_circ(Axes2D * axes, int radius) {
+    draw_octant_circ(axes, radius, 1, 0, 1, 0);
+    draw_octant_circ(axes, radius, 0, 0, 1, 1);
 
-    draw_circ(axes, radius, 0, 0, 0, 0);
-    draw_circ(axes, radius, 1, 0, 0, 1);
+    draw_octant_circ(axes, radius, 0, 0, 0, 0);
+    draw_octant_circ(axes, radius, 1, 0, 0, 1);
 
-    draw_circ(axes, radius, 1, 1, 0, 0);
-    draw_circ(axes, radius, 0, 1, 0, 1);
+    draw_octant_circ(axes, radius, 1, 1, 0, 0);
+    draw_octant_circ(axes, radius, 0, 1, 0, 1);
 
-    draw_circ(axes, radius, 0, 1, 1, 0);
-    draw_circ(axes, radius, 1, 1, 1, 1);
+    draw_octant_circ(axes, radius, 0, 1, 1, 0);
+    draw_octant_circ(axes, radius, 1, 1, 1, 1);
 }

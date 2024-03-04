@@ -1,4 +1,4 @@
-#include "stepper_lib.h"
+#include "stepper.h"
 
 #include <Arduino.h>
 
@@ -70,7 +70,7 @@ bool apply_stepper(Stepper * stepper, Step direction) {
 }
 
 void apply(Axes2D * axes, Step x, Step y) {
-    // Wait if one stepper stepped, no short-circuit evaluation
+    // Wait only if one stepper stepped, no short-circuit evaluation
     if (apply_stepper(&axes->X, x) | apply_stepper(&axes->Y, y)) {
         STEP_DELAY;
     }
