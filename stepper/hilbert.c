@@ -1,103 +1,48 @@
+#include "function.h"
 #include "hilbert.h"
 
-#include "function.h"
+#include <math.h>
 
-enum A {
-  UP,
-  LEFT,
-  DOWN,
-  RIGHT,
-};
+#include "stepper_lib.h"
 
-int pos_x = 0;
-int pos_y = 0;
-int dist = 0;
-Axes2D * axess;
+// Helpers to draw given a direction
 
-void move(enum A a) {
-    if (a == UP) {
-        pos_y -= dist;
-    } else if (a == LEFT) {
-        pos_x -= dist;
-    } else if (a == DOWN) {
-        pos_y += dist;
-    } else if (a == RIGHT) {
-        pos_x += dist;
+// Integer -sin(pi/2 * x) length 4 bitwise mapping: 0, -1, 0, 1
+#define MSIN(x) (int) (((x) & 1) - (((x) == 1) << 1))
+
+typedef enum {
+    UP,
+    LEFT,
+    DOWN,
+    RIGHT,
+    END,
+} Direction;
+
+static inline void move_dir(Axes2D * pos, Direction d, int l) {
+    move_line_to(pos, pos->X.pos + MSIN(d) * l, pos->Y.pos + MSIN((d + 1) % END) * l);
+}
+
+// Hilbert curve recursive algorithm as L-system (https://en.wikipedia.org/wiki/Hilbert_curve)
+
+void hilbert_rec(Axes2D * pos, int level, Direction direction, int length) {
+    if (!--level) {
+        move_dir(pos, (direction + 2) % END, length);
+        move_dir(pos, RIGHT - direction, length);
+        move_dir(pos, direction, length);
+        return;
     }
 
-    move_line_to(axess, pos_x, pos_y);
+    hilbert_rec(pos, level, (LEFT - direction + END) % END, length);
+    move_dir(pos, (direction + DOWN) % END, length);
+    hilbert_rec(pos, level, direction, length);
+    move_dir(pos, (RIGHT - direction + END) % END, length);
+    hilbert_rec(pos, level, direction, length);
+    move_dir(pos, direction, length);
+    hilbert_rec(pos, level, (RIGHT - direction + END) % END, length);
 }
 
-void hilbert_level(int level,int direction)
-{
-  if (level==1) {
-    switch (direction) {
-    case LEFT:
-      move(RIGHT);      /* move() could draw a line in... */
-      move(DOWN);       /* ...the indicated direction */
-      move(LEFT);
-      break;
-    case RIGHT:
-      move(LEFT);
-      move(UP);
-      move(RIGHT);
-      break;
-    case UP:
-      move(DOWN);
-      move(RIGHT);
-      move(UP);
-      break;
-    case DOWN:
-      move(UP);
-      move(LEFT);
-      move(DOWN);
-      break;
-    } /* switch */
-  } else {
-    switch (direction) {
-    case LEFT:
-      hilbert_level(level-1,UP);
-      move(RIGHT);
-      hilbert_level(level-1,LEFT);
-      move(DOWN);
-      hilbert_level(level-1,LEFT);
-      move(LEFT);
-      hilbert_level(level-1,DOWN);
-      break;
-    case RIGHT:
-      hilbert_level(level-1,DOWN);
-      move(LEFT);
-      hilbert_level(level-1,RIGHT);
-      move(UP);
-      hilbert_level(level-1,RIGHT);
-      move(RIGHT);
-      hilbert_level(level-1,UP);
-      break;
-    case UP:
-      hilbert_level(level-1,LEFT);
-      move(DOWN);
-      hilbert_level(level-1,UP);
-      move(RIGHT);
-      hilbert_level(level-1,UP);
-      move(UP);
-      hilbert_level(level-1,RIGHT);
-      break;
-    case DOWN:
-      hilbert_level(level-1,RIGHT);
-      move(UP);
-      hilbert_level(level-1,DOWN);
-      move(LEFT);
-      hilbert_level(level-1,DOWN);
-      move(DOWN);
-      hilbert_level(level-1,LEFT);
-      break;
-    } /* switch */
-  } /* if */
-}
+void hilbert(Axes2D * pos, int side_length, int level) {
+    const int length = (int) (side_length / pow(2, level));
 
-void hilbert(Axes2D * axes2) {
-    int level = 4;
-    axess = axes2;
-    dist = AREA_SIDE / pow(2, level);
-    hilbert_level(level, UP);
+    hilbert_rec(pos, level, UP, length);
 }

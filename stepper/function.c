@@ -23,7 +23,7 @@ void move_line_to(Axes2D * axes, int dest_x, int dest_y) {
     const int sx = (x < dest_x) ? 1 : -1, sy = (y < dest_y) ? 1 : -1;
     int err = dx - dy;
 
-    while (x != dest_x || y != dest_y) {
+    while (axes->X.pos != dest_x || axes->Y.pos != dest_y) {
         apply(axes, DIR(x - axes->X.pos), DIR(y - axes->Y.pos));
         int e2 = 2 * err;
         if (e2 > -dy) {
@@ -116,4 +116,3 @@ void move_circ(Axes2D * axes, long radius) {
     draw_circ(axes, radius, 0, 1, 1, 0);
     draw_circ(axes, radius, 1, 1, 1, 1);
 }
-

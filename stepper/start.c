@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 #include "function.h"
+#include "hilbert.h"
 #include "log.h"
 #include "stepper_lib.h"
 
@@ -98,7 +99,6 @@ void start() {
     // move_line_to(&axes, 0, AREA_SIDE / 2);
     // move_line_to(&axes, AREA_SIDE / 2, 0);
 
-
     limit_wait();
-    hilbert(&axes);
+    hilbert(&axes, AREA_SIDE, 4);
 }
