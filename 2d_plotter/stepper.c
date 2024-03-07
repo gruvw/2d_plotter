@@ -27,8 +27,8 @@ int mod(int a, int b) {
 
 void step(Stepper * stepper, bool forward) {
     stepper->pos += forward ? 1 : -1;
-    for (int i = 0; i < _STEPS; i++) {
-        digitalWrite(stepper->STEP_PINS[i], (mod(stepper->pos, _STEPS) - i) == 0);
+    for (int p = 0; p < _STEPS; p++) {
+        digitalWrite(stepper->STEP_PINS[p], (mod(stepper->pos, _STEPS) - p) == 0);
     }
 }
 
@@ -40,7 +40,7 @@ void origin_stepper(Stepper * stepper, int limit) {
     }
 
     // Walk back to relieve switch + go to axis origin
-    for (int i = 0; i < limit; ++i) {
+    for (int _l = 0; _l < limit; ++_l) {
         step(stepper, true);
         STEP_DELAY;
     }

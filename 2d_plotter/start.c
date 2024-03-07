@@ -4,58 +4,8 @@
 #include "hilbert.h"
 #include "log.h"
 
-#define FOR(len) ((t <= len || ((t -= len) && 0)))
-#define DIR(a) (a < 0 ? BACKWARD : (a == 0 ? STAND : FORWARD))
-
-Step2D square_func(long t, int x, int y) {
-    static int origin = 0;
-
-    if (FOR(AREA_SIDE / 2)) {
-        return STEP(FORWARD, STAND);
-    }
-
-    if (!origin) {
-        limit_wait();
-        origin = !origin;
-    }
-
-    // if (FOR(AREA_SIDE / 2)) {
-    //     return STEP(FORWARD, STAND);
-    // }
-
-    // if (FOR(AREA_SIDE)) {
-    //     return STEP(STAND, FORWARD);
-    // }
-
-    // if (FOR(AREA_SIDE)) {
-    //     return STEP(BACKWARD, STAND);
-    // }
-
-    // if (FOR(AREA_SIDE)) {
-    //     return STEP(STAND, BACKWARD);
-    // }
-
-    // if (FOR(AREA_SIDE / 2)) {
-    //     return STEP(FORWARD, STAND);
-    // }
-
-    return STEP_STOP;
-}
-
-// Step2D inscribed_circle_func(long t, int x, int y) {
-//     static const double ac =  (double) AREA_SIDE / 2;
-//     static const double precision = 90000;
-//     static const double rad = TWO_PI / precision;
-
-//     if (FOR(precision)) {
-//         double a = (double) t * rad;
-//         double b = round(ac * (1 + sin(a)) - x);
-//         double c = round(ac * (1 - cos(a)) - y);
-//         return STEP(DIR(b), DIR(c));
-//     }
-
-//     return STEP_STOP;
-// }
+#define HILBERT_LEVEL 4
+#define CIRCLE_PRECISION 20
 
 void start() {
     Axes2D axes = stepper_setup();
@@ -79,23 +29,29 @@ void start() {
     // move_line_to(&axes, 0, AREA_SIDE / 2);
     // move_line_to(&axes, AREA_SIDE / 2, 0);
 
-
-    // move_line_to(&axes, AREA_SIDE / 2, 0);
-    // limit_wait();
-
-    // move_line_to(&axes, AREA_SIDE, 0);
-    // move_line_to(&axes, AREA_SIDE, AREA_SIDE);
-    // move_line_to(&axes, 0, AREA_SIDE);
-    // move_line_to(&axes, 0, 0);
-    // move_line_to(&axes, AREA_SIDE / 2, 0);
-
-    // move_circ(&axes, AREA_SIDE / 2);
-
     // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
     // move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
     // move_line_to(&axes, 0, AREA_SIDE / 2);
     // move_line_to(&axes, AREA_SIDE / 2, 0);
 
+
+    // Inscribed circle in square
+
+    draw_line_to(&axes, AREA_SIDE / 2, 0);
     limit_wait();
-    draw_hilbert(&axes, AREA_SIDE, 4);
+
+    // Square
+    draw_line_to(&axes, AREA_SIDE, 0);
+    draw_line_to(&axes, AREA_SIDE, AREA_SIDE);
+    draw_line_to(&axes, 0, AREA_SIDE);
+    draw_line_to(&axes, 0, 0);
+    draw_line_to(&axes, AREA_SIDE / 2, 0);
+
+    draw_circle(&axes, AREA_SIDE / 2, CIRCLE_PRECISION);
+
+
+    // Hilbert
+
+    // limit_wait();
+    // draw_hilbert(&axes, AREA_SIDE, HILBERT_LEVEL);
 }

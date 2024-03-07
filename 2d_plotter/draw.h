@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Arduino.h>
+#include <stdbool.h>
 
 #include "stepper.h"
 
@@ -10,12 +10,7 @@ typedef struct {
     Step y;
 } Step2D;
 
-#define STEP_STOP (Step2D) { true }
-#define STEP(x, y) (Step2D) { false, x, y }
-
 typedef Step2D (*Function2D)(long t, int x, int y, void * args);
 
-void apply_function(Axes2D * axes, Function2D function, void * args);
-
 void draw_line_to(Axes2D * axes, int dest_x, int dest_y);
-void draw_circ(Axes2D * axes, int radius);
+void draw_circle(Axes2D * axes, int radius, int precision);
