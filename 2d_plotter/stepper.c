@@ -8,7 +8,7 @@
 #define STEPPER_Y_PINS { DD5, DD4, DD3, DD2 }
 
 // Stepper constants
-#define STEP_DELAY delay(2)
+#define STEP_DELAY delay(6)
 #define LIMIT_X 600
 #define LIMIT_Y 100
 

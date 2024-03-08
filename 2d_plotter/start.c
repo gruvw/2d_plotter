@@ -5,7 +5,7 @@
 #include "log.h"
 
 #define HILBERT_LEVEL 4
-#define CIRCLE_PRECISION 20
+#define CIRCLE_PRECISION 15
 
 void start() {
     Axes2D axes = stepper_setup();
@@ -37,21 +37,20 @@ void start() {
 
     // Inscribed circle in square
 
-    draw_line_to(&axes, AREA_SIDE / 2, 0);
-    limit_wait();
+    // draw_line_to(&axes, AREA_SIDE / 2, 0);
+    // limit_wait();
 
-    // Square
-    draw_line_to(&axes, AREA_SIDE, 0);
-    draw_line_to(&axes, AREA_SIDE, AREA_SIDE);
-    draw_line_to(&axes, 0, AREA_SIDE);
-    draw_line_to(&axes, 0, 0);
-    draw_line_to(&axes, AREA_SIDE / 2, 0);
+    // draw_line_to(&axes, AREA_SIDE, 0);
+    // draw_line_to(&axes, AREA_SIDE, AREA_SIDE);
+    // draw_line_to(&axes, 0, AREA_SIDE);
+    // draw_line_to(&axes, 0, 0);
+    // draw_line_to(&axes, AREA_SIDE / 2, 0);
 
-    draw_circle(&axes, AREA_SIDE / 2, CIRCLE_PRECISION);
+    // draw_circle(&axes, AREA_SIDE / 2, CIRCLE_PRECISION);
 
 
     // Hilbert
 
-    // limit_wait();
-    // draw_hilbert(&axes, AREA_SIDE, HILBERT_LEVEL);
+    limit_wait();
+    draw_hilbert(&axes, AREA_SIDE, HILBERT_LEVEL);
 }
