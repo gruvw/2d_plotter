@@ -20,19 +20,19 @@ Axes2D stepper_setup() {
     return (Axes2D) {X, Y};
 }
 
-int mod(int a, int b) {
-    int r = a % b;
+static inline int mod(const int a, const int b) {
+    const int r = a % b;
     return r < 0 ? r + b : r;
 }
 
-void step(Stepper * stepper, bool forward) {
+void step(Stepper * const stepper, const bool forward) {
     stepper->pos += forward ? 1 : -1;
     for (int p = 0; p < _STEPS; p++) {
         digitalWrite(stepper->STEP_PINS[p], (mod(stepper->pos, _STEPS) - p) == 0);
     }
 }
 
-void origin_stepper(Stepper * stepper, int limit) {
+void origin_stepper(Stepper * const stepper, const int limit) {
     // Walk till limit switch hit
     while (!digitalRead(LIMIT_PIN)) {
         step(stepper, false);
@@ -40,27 +40,26 @@ void origin_stepper(Stepper * stepper, int limit) {
     }
 
     // Walk back to relieve switch + go to axis origin
-    for (int _l = 0; _l < limit; ++_l) {
+    stepper->pos = -limit;
+    while (stepper->pos != 0) {
         step(stepper, true);
         STEP_DELAY;
     }
-
-    stepper->pos = 0;
 }
 
-void origin(Axes2D * axes) {
+void origin(Axes2D * const axes) {
     origin_stepper(&axes->X, LIMIT_X);
     origin_stepper(&axes->Y, LIMIT_Y);
 }
 
-bool valid_direction(Stepper * stepper, Step direction) {
+static inline bool valid_direction(Stepper * const stepper, const Step direction) {
     return !(
         (direction == FORWARD && stepper->pos >= AREA_SIDE) ||
         (direction == BACKWARD && stepper->pos <= 0)
     );
 }
 
-bool apply_stepper(Stepper * stepper, Step direction) {
+bool apply_stepper(Stepper * const stepper, const Step direction) {
     if (direction == STAND || !valid_direction(stepper, direction)) {
         return false;
     }
@@ -69,7 +68,7 @@ bool apply_stepper(Stepper * stepper, Step direction) {
     return true;
 }
 
-void apply(Axes2D * axes, Step x, Step y) {
+void apply(Axes2D * const axes, const Step x, const Step y) {
     // Wait only if one stepper stepped, no short-circuit evaluation
     if (apply_stepper(&axes->X, x) | apply_stepper(&axes->Y, y)) {
         STEP_DELAY;

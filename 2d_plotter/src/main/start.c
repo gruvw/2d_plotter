@@ -6,50 +6,30 @@
 #define HILBERT_LEVEL 4
 #define CIRCLE_PRECISION 15
 
+// Programming assignment 1
+void square_inscribe_circle(Axes2D * const axes) {
+    draw_line_to(axes, AREA_SIDE / 2, 0);
+    limit_wait();
+
+    draw_line_to(axes, AREA_SIDE, 0);
+    draw_line_to(axes, AREA_SIDE, AREA_SIDE);
+    draw_line_to(axes, 0, AREA_SIDE);
+    draw_line_to(axes, 0, 0);
+    draw_line_to(axes, AREA_SIDE / 2, 0);
+
+    draw_circle(axes, AREA_SIDE / 2, CIRCLE_PRECISION);
+}
+
+// Programming assignment 2
+void hilbert_filling(Axes2D * const axes) {
+    limit_wait();
+    draw_hilbert(axes, AREA_SIDE, HILBERT_LEVEL);
+}
+
 void start() {
     Axes2D axes = stepper_setup();
     origin(&axes);
 
-    // apply_function(&axes, &square_func);
-    // apply_function(&axes, &inscribed_circle_func);
-
-    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
-    // move_line_to(&axes, 0, AREA_SIDE / 2);
-    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 4);
-    // move_line_to(&axes, 0, 0);
-
-    // move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
-    // move_line_to(&axes, AREA_SIDE / 2, 0);
-    // move_line_to(&axes, AREA_SIDE / 4, AREA_SIDE);
-    // move_line_to(&axes, 0, 0);
-
-    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
-    // move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
-    // move_line_to(&axes, 0, AREA_SIDE / 2);
-    // move_line_to(&axes, AREA_SIDE / 2, 0);
-
-    // move_line_to(&axes, AREA_SIDE, AREA_SIDE / 2);
-    // move_line_to(&axes, AREA_SIDE / 2, AREA_SIDE);
-    // move_line_to(&axes, 0, AREA_SIDE / 2);
-    // move_line_to(&axes, AREA_SIDE / 2, 0);
-
-
-    // Inscribed circle in square
-
-    // draw_line_to(&axes, AREA_SIDE / 2, 0);
-    // limit_wait();
-
-    // draw_line_to(&axes, AREA_SIDE, 0);
-    // draw_line_to(&axes, AREA_SIDE, AREA_SIDE);
-    // draw_line_to(&axes, 0, AREA_SIDE);
-    // draw_line_to(&axes, 0, 0);
-    // draw_line_to(&axes, AREA_SIDE / 2, 0);
-
-    // draw_circle(&axes, AREA_SIDE / 2, CIRCLE_PRECISION);
-
-
-    // Hilbert
-
-    limit_wait();
-    draw_hilbert(&axes, AREA_SIDE, HILBERT_LEVEL);
+    square_inscribe_circle(&axes);
+    // hilbert_filling(&axes);
 }
