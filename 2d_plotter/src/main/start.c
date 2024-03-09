@@ -2,6 +2,8 @@
 
 #include "../draw/draw.h"
 #include "../draw/hilbert.h"
+#include "../hardware/servo.h"
+#include "../hardware/stepper.h"
 
 #define HILBERT_LEVEL 4
 #define CIRCLE_PRECISION 15
@@ -27,9 +29,14 @@ void hilbert_filling(Axes2D * const axes) {
 }
 
 void start() {
+    Servo servo = servo_setup();
     Axes2D axes = stepper_setup();
-    origin(&axes);
+    // origin(&axes);
 
-    square_inscribe_circle(&axes);
+    // square_inscribe_circle(&axes);
     // hilbert_filling(&axes);
+
+    // pen_up(&servo);
+    // delay(1000);
+    // pen_down(&servo);
 }

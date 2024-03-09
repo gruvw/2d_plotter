@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdbool.h>
-
 #include "../hardware/stepper.h"
 
 void draw_line_to(Axes2D * axes, int dest_x, int dest_y);
