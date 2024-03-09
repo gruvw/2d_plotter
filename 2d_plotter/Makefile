@@ -1,13 +1,11 @@
-.PHONY: run monitor
-
-ard = "/home/gruvw/Applications/Arduino/bin/arduino-cli"
+.PHONY: build run monitor
 
 build:
-	$(ard) compile
+	arduino-cli compile
 
 run:
-	$(ard) compile
-	$(ard) upload
+	arduino-cli compile
+	arduino-cli upload
 
 monitor:
-	$(ard) monitor -p /dev/ttyUSB0
+	arduino-cli monitor -p /dev/ttyUSB0

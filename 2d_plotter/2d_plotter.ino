@@ -1,5 +1,5 @@
 extern "C" {
-    #include "start.h"
+    #include "src/main/start.h"
 }
 
 void setup() {
@@ -7,5 +7,4 @@ void setup() {
     start();
 }
 
-void loop() {
-}
+void loop() { }

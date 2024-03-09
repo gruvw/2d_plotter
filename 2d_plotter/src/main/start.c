@@ -1,8 +1,7 @@
 #include "start.h"
 
-#include "draw.h"
-#include "hilbert.h"
-#include "log.h"
+#include "../draw/draw.h"
+#include "../draw/hilbert.h"
 
 #define HILBERT_LEVEL 4
 #define CIRCLE_PRECISION 15

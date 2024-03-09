@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#include "stepper.h"
+#include "../hardware/stepper.h"
 
 typedef struct {
     bool finished;

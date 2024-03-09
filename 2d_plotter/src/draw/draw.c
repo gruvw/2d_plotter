@@ -4,8 +4,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "stepper.h"
-
 #define DIR(a) ((a) < 0 ? BACKWARD : ((a) == 0 ? STAND : FORWARD))
 #define CIR(d, r) (round(d * radius))
 
