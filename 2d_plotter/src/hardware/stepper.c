@@ -9,8 +9,14 @@
 
 // Stepper constants
 #define STEP_DELAY delay(6)
-#define LIMIT_X 600
-#define LIMIT_Y 100
+
+// Static pen holder
+// #define LIMIT_X 600
+// #define LIMIT_Y 100
+
+// Dynamic pen holder
+#define LIMIT_X 700
+#define LIMIT_Y 500
 
 Axes2D stepper_setup() {
     pinMode(LIMIT_PIN, INPUT_PULLUP);

@@ -29,14 +29,33 @@ void hilbert_filling(Axes2D * const axes) {
 }
 
 void start() {
+    // Setup
     Servo servo = servo_setup();
     Axes2D axes = stepper_setup();
-    // origin(&axes);
+
+    pen_up(&servo);
+    origin(&axes);
+
+    // Drawing
 
     // square_inscribe_circle(&axes);
+
     // hilbert_filling(&axes);
 
-    // pen_up(&servo);
-    // delay(1000);
-    // pen_down(&servo);
+    // Lifting pen rsidue test
+    const int mult = 10;
+    const int dist = AREA_SIDE / mult;
+    for (int i = 0; i < mult; ++i) {
+        pen_up(&servo);
+        draw_line_to(&axes, 0, dist * i);
+        pen_down(&servo);
+        for (int j = 0; j < mult; ++j) {
+            draw_line_to(&axes, dist * j, axes.Y.pos);
+            if (j % 2 == 0) {
+                pen_up(&servo);
+            } else {
+                pen_down(&servo);
+            }
+        }
+    }
 }

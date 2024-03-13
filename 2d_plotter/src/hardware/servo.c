@@ -3,24 +3,26 @@
 #include <Arduino.h>
 
 #define SERVO_PIN 11
-#define SERVO_BALANCE 20000
+#define SERVO_BALANCE 20000 + 50000
+
+#define SERVO_PENUP 1400
+#define SERVO_PENDOWN 1900
 
 Servo servo_setup() {
     return (Servo) {SERVO_PIN, 0};
 }
 
-void pen_up(Servo * servo) {
-    int pos = 2500;
+void apply_servo(Servo * servo, int time) {
     digitalWrite(servo->PIN, HIGH);
-    delayMicroseconds(pos);
+    delayMicroseconds(time);
     digitalWrite(servo->PIN, LOW);
-    delayMicroseconds(SERVO_BALANCE - pos);
+    delayMicroseconds(SERVO_BALANCE - time);
 }
 
-void pen_down(Servo * servo) {
-    int pos = 410;
-    digitalWrite(servo->PIN, HIGH);
-    delayMicroseconds(pos);
-    digitalWrite(servo->PIN, LOW);
-    delayMicroseconds(SERVO_BALANCE - pos);
+inline void pen_up(Servo * servo) {
+    apply_servo(servo, SERVO_PENUP);
+}
+
+inline void pen_down(Servo * servo) {
+    apply_servo(servo, SERVO_PENDOWN);
 }
