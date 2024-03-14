@@ -18,9 +18,9 @@ typedef struct {
 } Axes2D;
 
 typedef enum {
-    STAND,
-    FORWARD,
-    BACKWARD,
+    S_STAND,
+    S_FORWARD,
+    S_BACKWARD,
 } Step;
 
 // Stepper public functions
