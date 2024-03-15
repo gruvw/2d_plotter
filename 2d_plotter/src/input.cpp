@@ -4,11 +4,12 @@ extern "C" {
   #include "input.h"
 }
 
-#define MAX_WORD_LEN 10
+#define MAX_WORD_LEN 12
+
 #define SPACE ' '
 #define NEW_LINE '\n'
 
-static inline bool is_delimiter(char c) {
+static inline bool is_delimiter(const char c) {
     return (c == SPACE) || (c == NEW_LINE);
 }
 
@@ -20,10 +21,12 @@ char * get_next_word() {
         *word = Serial.read();
     } while (is_delimiter(*word));
 
-    for (int i = 1; i < MAX_WORD_LEN && !is_delimiter(word[i]); ++i) {
+    int w = 1;
+    while(!is_delimiter(word[w - 1]) && w < MAX_WORD_LEN) {
         while (Serial.available() <= 0);
-        word[i] = Serial.read();
+        word[w++] = Serial.read();
     }
+    word[w - 1] = '\0';  // removes last delimiter
 
     return word;
 }

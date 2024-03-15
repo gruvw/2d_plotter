@@ -99,15 +99,20 @@ void process_instruction(Turtle * turtle, Instruction instr) {
     } else if (instr.token == RIGHT) {
         turtle->angle += instr.arg % FULL_ROT;
     } else if (instr.token == REPEAT && get_next_instruction().token == LOOP_START) {
-        // Fetch the body of the loop
-        Instruction body[MAX_INSTR_PER_LOOP] = {0};
-        for (int in = 0; in < MAX_INSTR_PER_LOOP && body[in].token != LOOP_END; ++in) {
-            body[in] = get_next_instruction();
+        // Fetch the body of the loop, including nested loops
+        Instruction body[MAX_INSTR_PER_LOOP] = { 0 };
+        int body_len = 0;
+        for (int n_loops = 1; body_len < MAX_INSTR_PER_LOOP && n_loops > 0; ++body_len) {
+            body[body_len] = get_next_instruction();
+            n_loops += body[body_len].token == LOOP_START;
+            n_loops -= body[body_len].token == LOOP_END;
         }
 
-        // Execute loop body
+        // LEFT HERE
+
+        // Execute loop body `instr.arg` times
         for (int iter = 0; iter < instr.arg; ++iter) {
-            for (int in = 0; body[in].token != LOOP_END; ++in) {
+            for (int in = 0; body[in].token != LOOP_END; ++in) {  // BUG
                 process_instruction(turtle, body[in]);
             }
         }
