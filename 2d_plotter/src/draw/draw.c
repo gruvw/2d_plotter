@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define DIR(a) ((a) < 0 ? BACKWARD : ((a) == 0 ? STAND : FORWARD))
+#define DIR(a) ((a) < 0 ? S_BACKWARD : ((a) == 0 ? S_STAND : S_FORWARD))
 #define CIR(d, r) (round(d * radius))
 
 // Modified Bresenham's line algorithm (https://en.wikipedia.org/wiki/Bresenhams_line_algorithm)

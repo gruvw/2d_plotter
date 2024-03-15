@@ -60,17 +60,17 @@ void origin(Axes2D * const axes) {
 
 static inline bool valid_direction(Stepper * const stepper, const Step direction) {
     return !(
-        (direction == FORWARD && stepper->pos >= AREA_SIDE) ||
-        (direction == BACKWARD && stepper->pos <= 0)
+        (direction == S_FORWARD && stepper->pos >= AREA_SIDE) ||
+        (direction == S_BACKWARD && stepper->pos <= 0)
     );
 }
 
 bool apply_stepper(Stepper * const stepper, const Step direction) {
-    if (direction == STAND || !valid_direction(stepper, direction)) {
+    if (direction == S_STAND || !valid_direction(stepper, direction)) {
         return false;
     }
 
-    step(stepper, direction == FORWARD);
+    step(stepper, direction == S_FORWARD);
     return true;
 }
 

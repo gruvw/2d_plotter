@@ -1,18 +1,18 @@
+#include "turtle.h"
+
 #include <math.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../draw/draw.h"
-#include "../hardware/stepper.h"
 #include "../hardware/servo.h"
+#include "../hardware/stepper.h"
+#include "../input.h"
 
 #define FULL_ROT 360
-#define TO_RAD(x) ((x) * M_PI / 180)
+#define TO_RAD(x) ((x) *M_PI / 180)
 #define MAX_INSTR_PER_LOOP 50
-
-// Assume you have the following methods already defined
-char * get_next_word();
 
 typedef enum {
     PENUP,
@@ -67,14 +67,20 @@ Token tokenize(char * word) {
 }
 
 Instruction get_next_instruction() {
-    const Token token = tokenize(get_next_word());
+    char * const token_word = get_next_word();
+    const Token token = tokenize(token_word);
+    free(token_word);
 
     // Instructions without argument
     if (token == PENUP || token == PENDOWN || token == LOOP_START || token == LOOP_END) {
         return (Instruction) {token};
     }
 
-    return (Instruction) {token, atoi(get_next_word())};
+    char * const arg_word = get_next_word();
+    const Instruction instr = {token, atoi(arg_word)};
+    free(arg_word);
+
+    return instr;
 }
 
 void process_instruction(Turtle * turtle, Instruction instr) {
