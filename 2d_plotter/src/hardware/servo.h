@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct {
     const int PIN;
     int pos;
