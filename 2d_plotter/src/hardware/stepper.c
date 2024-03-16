@@ -60,8 +60,8 @@ void origin(Axes2D * const axes) {
 
 static inline bool valid_direction(Stepper * const stepper, const Step direction) {
     return !(
-        (direction == S_FORWARD && stepper->pos >= AREA_SIDE) ||
-        (direction == S_BACKWARD && stepper->pos <= 0)
+        (direction == S_FORWARD && stepper->pos > AREA_SIDE) ||
+        (direction == S_BACKWARD && stepper->pos < 0)
     );
 }
 

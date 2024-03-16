@@ -1,23 +1,27 @@
 #include "turtle.h"
 
 #include <math.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../draw/draw.h"
 #include "../hardware/servo.h"
 #include "../hardware/stepper.h"
-#include "../input.h"
+#include "input.h"
+
+#define MAX_INSTR_PER_LOOP 50
+#define TURTLE_CIRCLE_PRECISION 8
 
 #define FULL_ROT 360
-#define TO_RAD(x) ((x) *M_PI / 180)
-#define MAX_INSTR_PER_LOOP 50
+#define WAY(d) (d == FORWARD ? 1 : -1)
 
 typedef enum {
     PENUP,
     PENDOWN,
     FORWARD,
+    BACKWARD,
+    CIRCLE,
+    HOME,
     RIGHT,  // clockwise
     LEFT,  // counter-clockwise
     REPEAT,
@@ -45,6 +49,15 @@ Token tokenize(char * word) {
     if (strcmp(word, "forward") == 0) {
         return FORWARD;
     }
+    if (strcmp(word, "backward") == 0) {
+        return BACKWARD;
+    }
+    if (strcmp(word, "circle") == 0) {
+        return CIRCLE;
+    }
+    if (strcmp(word, "home") == 0) {
+        return HOME;
+    }
     if (strcmp(word, "left") == 0) {
         return LEFT;
     }
@@ -61,7 +74,7 @@ Token tokenize(char * word) {
         return LOOP_END;
     }
 
-    exit(1);
+    // ignore token
 }
 
 Instruction get_next_instruction(Program * const program) {
@@ -74,7 +87,8 @@ Instruction get_next_instruction(Program * const program) {
     free(token_word);
 
     // Instructions without argument
-    if (token == PENUP || token == PENDOWN || token == LOOP_START || token == LOOP_END) {
+    if (token == PENUP || token == PENDOWN || token == HOME || token == LOOP_START ||
+        token == LOOP_END) {
         return (Instruction) {token};
     }
 
@@ -94,14 +108,21 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
     } else if (instr.token == PENDOWN && !turtle->is_pendown) {
         turtle->is_pendown = true;
         pen_down(plotter->pen);
-    } else if (instr.token == S_FORWARD) {
+    } else if (instr.token == FORWARD || instr.token == BACKWARD) {
         const double radians = TO_RAD(turtle->angle);
+        const int way = WAY(instr.token);
         const int x = (int) (instr.arg * cos(radians)), y = (int) (instr.arg * sin(radians));
-        draw_line_to(plotter->axes, plotter->axes->X.pos + x, plotter->axes->Y.pos + y);
+        draw_line_to(plotter->axes, plotter->axes->X.pos + x * way, plotter->axes->Y.pos + y * way);
+    } else if (instr.token == CIRCLE) {
+        draw_circle(plotter->axes, instr.arg, turtle->angle, TURTLE_CIRCLE_PRECISION);
+    } else if (instr.token == HOME) {
+        draw_line_to(plotter->axes, AREA_SIDE / 2, AREA_SIDE / 2);
     } else if (instr.token == LEFT) {
-        turtle->angle -= (instr.arg + FULL_ROT) % FULL_ROT;
+        turtle->angle -= instr.arg;
+        turtle->angle = (turtle->angle + FULL_ROT) % FULL_ROT;
     } else if (instr.token == RIGHT) {
-        turtle->angle += instr.arg % FULL_ROT;
+        turtle->angle += instr.arg;
+        turtle->angle = turtle->angle % FULL_ROT;
     } else if (instr.token == REPEAT && get_next_instruction(program).token == LOOP_START) {
         // Fetch the body of the loop, including nested loops
         Instruction body[MAX_INSTR_PER_LOOP] = { 0 };
@@ -121,6 +142,7 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
             }
         }
     }
+
     // ingnore instruction
 }
 
@@ -131,4 +153,4 @@ void turtle_main(Turtle * const turtle) {
 }
 
 // Examlpes
-// repeat 10 [ repeat 360 [ fd 3 rt 1 ] rt 72 ]
+// repeat 5 [ repeat 360 [ forward 3 right 1 ] right 72 ]

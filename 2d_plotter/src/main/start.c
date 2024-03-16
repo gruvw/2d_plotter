@@ -9,6 +9,8 @@
 #define HILBERT_LEVEL 4
 #define CIRCLE_PRECISION 15
 
+// Procedures
+
 void square_inscribe_circle(Plotter * plotter) {
     draw_line_to(plotter->axes, AREA_SIDE / 2, 0);
     limit_wait();
@@ -21,7 +23,7 @@ void square_inscribe_circle(Plotter * plotter) {
     draw_line_to(plotter->axes, 0, 0);
     draw_line_to(plotter->axes, AREA_SIDE / 2, 0);
 
-    draw_circle(plotter->axes, AREA_SIDE / 2, CIRCLE_PRECISION);
+    draw_circle(plotter->axes, AREA_SIDE / 2, 0, CIRCLE_PRECISION);
 }
 
 void hilbert_filling(Plotter * plotter) {
@@ -41,6 +43,8 @@ void turtle_REPL(Plotter * plotter) {
     turtle_main(&turtle);
 }
 
+// Entry point
+
 void start() {
     // Setup
     Servo servo = servo_setup();
@@ -52,23 +56,23 @@ void start() {
 
     // square_inscribe_circle(&plotter);
     // hilbert_filling(&plotter);
-    // turtle_REPL(&plotter);
+    turtle_REPL(&plotter);
 
     // Lifting pen rsidue test
-    const int mult = 10;
-    const int dist = AREA_SIDE / mult;
-    for (int i = 0; i < mult; ++i) {
-        pen_up(&servo);
-        draw_line_to(&axes, 0, dist * i);
-        pen_down(&servo);
-        for (int j = 0; j < mult; ++j) {
-            draw_line_to(&axes, dist * j, axes.Y.pos);
-            if (j % 2 == 0) {
-                pen_up(&servo);
-            } else {
-                pen_down(&servo);
-            }
-        }
-    }
-    pen_up(&servo);
+    // const int mult = 10;
+    // const int dist = AREA_SIDE / mult;
+    // for (int i = 0; i < mult; ++i) {
+    //     pen_up(&servo);
+    //     draw_line_to(&axes, 0, dist * i);
+    //     pen_down(&servo);
+    //     for (int j = 0; j < mult; ++j) {
+    //         draw_line_to(&axes, dist * j, axes.Y.pos);
+    //         if (j % 2 == 0) {
+    //             pen_up(&servo);
+    //         } else {
+    //             pen_down(&servo);
+    //         }
+    //     }
+    // }
+    // pen_up(&servo);
 }
