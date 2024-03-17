@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#define SERVO_PIN 11
+#define SERVO_PIN 10
 #define SERVO_BALANCE 20000
 #define SERVO_WAIT 100
 

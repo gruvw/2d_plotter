@@ -137,7 +137,6 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
         for (int iter = 0; iter < instr.arg; ++iter) {
             Program loop = { body, 0 };
             while (loop.program_counter < body_len) {
-                Instruction next = get_next_instruction(&loop);
                 process_instruction(turtle, get_next_instruction(&loop), &loop);
             }
         }
@@ -153,4 +152,4 @@ void turtle_main(Turtle * const turtle) {
 }
 
 // Examlpes
-// repeat 5 [ repeat 360 [ forward 3 right 1 ] right 72 ]
+// repeat 5 [ repeat 360 [ forward 10 right 1 ] right 72 ]
