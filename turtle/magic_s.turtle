@@ -1,0 +1,34 @@
+penup home right 90 forward 100 left 180 pendown
+forward 100
+left 45
+forward 130
+right 45
+forward 100
+right 45
+forward 130
+right 90
+forward 130
+right 45
+forward 100
+right 45
+forward 60
+
+penup
+right 45
+forward 100
+left 45
+pendown
+
+forward 60
+left 45
+forward 100
+left 45
+forward 130
+left 90
+forward 130
+left 45
+forward 100
+left 45
+forward 130
+right 45
+forward 100

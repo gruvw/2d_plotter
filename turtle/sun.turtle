@@ -1,0 +1,22 @@
+penup
+home
+
+setheading 270
+forward 800
+setheading 0
+pendown
+
+circle 800
+penup
+right 90
+forward 800
+setheading 270
+
+repeat 10 [
+    forward 1000
+    pendown
+    forward 300
+    penup
+    backward 1300
+    right 36
+]

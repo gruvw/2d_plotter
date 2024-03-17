@@ -24,6 +24,7 @@ typedef enum {
     HOME,
     RIGHT,  // clockwise
     LEFT,  // counter-clockwise
+    SETHEADING,
     REPEAT,
     LOOP_START,
     LOOP_END,
@@ -63,6 +64,9 @@ Token tokenize(char * word) {
     }
     if (strcmp(word, "right") == 0) {
         return RIGHT;
+    }
+    if (strcmp(word, "setheading") == 0) {
+        return SETHEADING;
     }
     if (strcmp(word, "repeat") == 0) {
         return REPEAT;
@@ -123,6 +127,8 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
     } else if (instr.token == RIGHT) {
         turtle->angle += instr.arg;
         turtle->angle = turtle->angle % FULL_ROT;
+    } else if (instr.token == SETHEADING) {
+        turtle->angle = (instr.arg + FULL_ROT) % FULL_ROT;
     } else if (instr.token == REPEAT && get_next_instruction(program).token == LOOP_START) {
         // Fetch the body of the loop, including nested loops
         Instruction body[MAX_INSTR_PER_LOOP] = { 0 };

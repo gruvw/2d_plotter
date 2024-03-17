@@ -1,3 +1,5 @@
+penup home pendown
+
 repeat 5 [
     circle 600
     right 72
