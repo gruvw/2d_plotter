@@ -4,11 +4,13 @@ extern "C" {
   #include "input.h"
 }
 
+// Standard input settings
 #define MAX_WORD_LEN 12
 
 #define SPACE ' '
 #define NEW_LINE '\n'
 
+// Return true if the given character `c` is a delimiter, false otherwise
 static inline bool is_delimiter(const char c) {
     return (c == SPACE) || (c == NEW_LINE);
 }

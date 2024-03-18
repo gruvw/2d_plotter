@@ -23,12 +23,15 @@ typedef enum {
     S_BACKWARD,
 } Step;
 
-// Stepper public functions
-
+// Returns an initialized instance of `Axes2D`
 Axes2D stepper_setup();
 
+// Moves to origin of the axes system
 void origin(Axes2D * axes);
 
+// Moves axes at the same time in the given `direction` if it is possible;
+// only wait for steppers to move if one of them moved
 void apply(Axes2D * axes, Step x, Step y);
 
+// Waits till the limit switch is pressed
 void limit_wait();

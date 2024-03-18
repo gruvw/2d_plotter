@@ -4,8 +4,8 @@
 
 // Arduino steppers pins
 #define LIMIT_PIN DD7
-#define STEPPER_X_PINS { A0, A1, A2, A3 }
-#define STEPPER_Y_PINS { DD5, DD4, DD3, DD2 }
+#define STEPPER_X_PINS {A0, A1, A2, A3}
+#define STEPPER_Y_PINS {DD5, DD4, DD3, DD2}
 
 // Stepper constants
 #define STEP_DELAY delay(6)
@@ -26,11 +26,13 @@ Axes2D stepper_setup() {
     return (Axes2D) {X, Y};
 }
 
+// Modulus operation that always results in a positive number
 static inline int mod(const int a, const int b) {
     const int r = a % b;
     return r < 0 ? r + b : r;
 }
 
+// Moves the given `stepper` (without verification) one step forward if `forward` is true, backward otherwise
 void step(Stepper * const stepper, const bool forward) {
     stepper->pos += forward ? 1 : -1;
     for (int p = 0; p < _STEPS; p++) {
@@ -38,6 +40,7 @@ void step(Stepper * const stepper, const bool forward) {
     }
 }
 
+// Moves the `stepper` to its origin along its axis
 void origin_stepper(Stepper * const stepper, const int limit) {
     // Walk till limit switch hit
     while (!digitalRead(LIMIT_PIN)) {
@@ -58,6 +61,7 @@ void origin(Axes2D * const axes) {
     origin_stepper(&axes->Y, LIMIT_Y);
 }
 
+// Returns true if the stepper can move in the given `direction`, false otherwise
 static inline bool valid_direction(Stepper * const stepper, const Step direction) {
     return !(
         (direction == S_FORWARD && stepper->pos > AREA_SIDE) ||
@@ -65,6 +69,8 @@ static inline bool valid_direction(Stepper * const stepper, const Step direction
     );
 }
 
+// Moves the `stepper` in the given `direction` if it is possible;
+// returns true if moved, false otherwise
 bool apply_stepper(Stepper * const stepper, const Step direction) {
     if (direction == S_STAND || !valid_direction(stepper, direction)) {
         return false;

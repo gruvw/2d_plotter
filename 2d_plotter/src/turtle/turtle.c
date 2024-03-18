@@ -28,7 +28,34 @@ typedef enum {
     REPEAT,
     LOOP_START,
     LOOP_END,
+    NO_OP,  // does nothing, must be last
 } Token;
+
+// In order correspondance between token and actual program text (NO_OP omitted as default)
+const char * const tokens_text[] = {
+    "penup",
+    "pendown",
+    "forward",
+    "backward",
+    "circle",
+    "home",
+    "right",
+    "left",
+    "setheading",
+    "repeat",
+    "[",
+    "]",
+};
+
+// Tokens that does not have an argument following
+const Token standalone_tokens[] = {
+    PENUP,
+    PENDOWN,
+    HOME,
+    LOOP_START,
+    LOOP_END,
+    NO_OP,  // do not fetch argument if unrecognized token
+};
 
 typedef struct {
     Token token;
@@ -41,61 +68,35 @@ typedef struct {
 } Program;
 
 Token tokenize(char * word) {
-    if (strcmp(word, "penup") == 0) {
-        return PENUP;
-    }
-    if (strcmp(word, "pendown") == 0) {
-        return PENDOWN;
-    }
-    if (strcmp(word, "forward") == 0) {
-        return FORWARD;
-    }
-    if (strcmp(word, "backward") == 0) {
-        return BACKWARD;
-    }
-    if (strcmp(word, "circle") == 0) {
-        return CIRCLE;
-    }
-    if (strcmp(word, "home") == 0) {
-        return HOME;
-    }
-    if (strcmp(word, "left") == 0) {
-        return LEFT;
-    }
-    if (strcmp(word, "right") == 0) {
-        return RIGHT;
-    }
-    if (strcmp(word, "setheading") == 0) {
-        return SETHEADING;
-    }
-    if (strcmp(word, "repeat") == 0) {
-        return REPEAT;
-    }
-    if (strcmp(word, "[") == 0) {
-        return LOOP_START;
-    }
-    if (strcmp(word, "]") == 0) {
-        return LOOP_END;
+    for (int i = 0; i < NO_OP; ++i) {
+        if (strcmp(word, tokens_text[i]) == 0) {
+            return (Token) i;
+        }
     }
 
-    // ignore token
+    // ignore unrecognized tokens
+    return NO_OP;
 }
 
 Instruction get_next_instruction(Program * const program) {
     if (program != NULL) {
+        // Instruction already provided by `program`, do not consume standard input
         return program->instructions[program->program_counter++];
     }
 
+    // Fetch and decode instructions from standard input
     char * const token_word = get_next_word();
     const Token token = tokenize(token_word);
     free(token_word);
 
     // Instructions without argument
-    if (token == PENUP || token == PENDOWN || token == HOME || token == LOOP_START ||
-        token == LOOP_END) {
-        return (Instruction) {token};
+    for (int i = 0; i < sizeof(standalone_tokens) / sizeof(*standalone_tokens); ++i) {
+        if (token == standalone_tokens[i]) {
+            return (Instruction) {token};
+        }
     }
 
+    // Fetch and parse argument from standard input
     char * const arg_word = get_next_word();
     const Instruction instr = {token, atoi(arg_word)};
     free(arg_word);
@@ -103,15 +104,17 @@ Instruction get_next_instruction(Program * const program) {
     return instr;
 }
 
+// Executes the given instructions `instr`;
+// gets additional instructions (when needed) from `program` if provided, standard input otherwise
 void process_instruction(Turtle * turtle, Instruction instr, Program * program) {
     Plotter * const plotter = turtle->plotter;
 
     if (instr.token == PENUP && turtle->is_pendown) {
         turtle->is_pendown = false;
-        pen_up(plotter->pen);
+        penup(plotter->pen);
     } else if (instr.token == PENDOWN && !turtle->is_pendown) {
         turtle->is_pendown = true;
-        pen_down(plotter->pen);
+        pendown(plotter->pen);
     } else if (instr.token == FORWARD || instr.token == BACKWARD) {
         const double radians = TO_RAD(turtle->angle);
         const int way = WAY(instr.token);
@@ -131,7 +134,7 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
         turtle->angle = (instr.arg + FULL_ROT) % FULL_ROT;
     } else if (instr.token == REPEAT && get_next_instruction(program).token == LOOP_START) {
         // Fetch the body of the loop, including nested loops
-        Instruction body[MAX_INSTR_PER_LOOP] = { 0 };
+        Instruction body[MAX_INSTR_PER_LOOP] = {0};
         int body_len = 0;
         for (int n_loops = 1; body_len < MAX_INSTR_PER_LOOP && n_loops > 0; ++body_len) {
             body[body_len] = get_next_instruction(program);
@@ -141,14 +144,14 @@ void process_instruction(Turtle * turtle, Instruction instr, Program * program) 
 
         // Execute loop body `instr.arg` times
         for (int iter = 0; iter < instr.arg; ++iter) {
-            Program loop = { body, 0 };
+            Program loop = {body, 0};
             while (loop.program_counter < body_len) {
                 process_instruction(turtle, get_next_instruction(&loop), &loop);
             }
         }
     }
 
-    // ingnore instruction
+    // ignore instruction
 }
 
 void turtle_main(Turtle * const turtle) {
@@ -156,6 +159,3 @@ void turtle_main(Turtle * const turtle) {
         process_instruction(turtle, get_next_instruction(NULL), NULL);
     }
 }
-
-// Examlpes
-// repeat 5 [ repeat 360 [ forward 10 right 1 ] right 72 ]

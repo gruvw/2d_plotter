@@ -1,7 +1,7 @@
 #pragma once
 
-#include "stepper.h"
 #include "servo.h"
+#include "stepper.h"
 
 typedef struct {
     Axes2D * axes;

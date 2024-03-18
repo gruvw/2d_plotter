@@ -7,14 +7,14 @@
 #define DIR(a) ((a) < 0 ? S_BACKWARD : ((a) == 0 ? S_STAND : S_FORWARD))
 #define CIR(d, r) (round(d * radius))
 
+// Makes sure the destination point along a given axis is inside the drawing area
 static inline int clamp_dest(const int dest) {
     const int t = dest < 0 ? 0 : dest;
     return t > AREA_SIDE ? AREA_SIDE : t;
 }
 
-// Modified Bresenham's line algorithm (https://en.wikipedia.org/wiki/Bresenhams_line_algorithm)
 void draw_line_to(Axes2D * const axes, int dest_x, int dest_y) {
-    // Make sure destination is inside of drawing area
+    // Make sure both destinations are inside the drawing area
     dest_x = clamp_dest(dest_x), dest_y = clamp_dest(dest_y);
 
     int x = axes->X.pos, y = axes->Y.pos;
@@ -36,12 +36,12 @@ void draw_line_to(Axes2D * const axes, int dest_x, int dest_y) {
     }
 }
 
-void draw_circle(Axes2D * const axes, const int radius, const int start_angle, const int precision) {
+void draw_circle(Axes2D * const axes, const int radius, const int angle, const int precision) {
     assert(precision >= 1);
 
     const int x = axes->X.pos, y = axes->Y.pos;  // top of circle
     const double step = M_PI_2 / precision;
-    const double rot = TO_RAD(start_angle);
+    const double rot = TO_RAD(angle);
 
     // Precision * 4 top make sure the 4 extremes points are included
     for (int t = 1; t <= 4 * precision; ++t) {

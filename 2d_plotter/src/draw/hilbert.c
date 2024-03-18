@@ -17,6 +17,7 @@ typedef enum {
     END,
 } Direction;
 
+// Draws a line in the given direction `d` with the given length `l`
 static inline void draw_line_dir(Axes2D * const pos, const Direction d, const int l) {
     draw_line_to(pos, pos->X.pos + IMSIN(d) * l, pos->Y.pos + IMSIN((d + 1) % END) * l);
 }

@@ -10,4 +10,5 @@ typedef struct {
     int angle;  // in degrees
 } Turtle;
 
+// Turtle REPL from standard input
 void turtle_main(Turtle * turtle);
