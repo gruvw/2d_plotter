@@ -30,6 +30,8 @@ void square_inscribe_circle(Plotter * plotter) {
     draw_line_to(plotter->axes, AREA_SIDE / 2, 0);
 
     draw_circle(plotter->axes, AREA_SIDE / 2, 0, CIRCLE_PRECISION);
+
+    penup(plotter->pen);
     play_done_sound();
 }
 
@@ -41,6 +43,8 @@ void hilbert_filling(Plotter * plotter) {
     pendown(plotter->pen);
 
     draw_hilbert(plotter->axes, AREA_SIDE, HILBERT_LEVEL);
+
+    penup(plotter->pen);
     play_done_sound();
 }
 
@@ -63,29 +67,29 @@ void start() {
     Plotter plotter = {&axes, &servo};
 
     // Moves to origin
-    play_start_sound();
     penup(plotter.pen);
+    play_start_sound();
     origin(plotter.axes);
 
-    // square_inscribe_circle(&plotter);
+    square_inscribe_circle(&plotter);
     // hilbert_filling(&plotter);
-    turtle_REPL(&plotter);
+    // turtle_REPL(&plotter);
 
     // Lifting pen rsidue test
     // const int mult = 10;
     // const int dist = AREA_SIDE / mult;
     // for (int i = 0; i < mult; ++i) {
-    //     pen_up(&servo);
+    //     penup(&servo);
     //     draw_line_to(&axes, 0, dist * i);
-    //     pen_down(&servo);
+    //     pendown(&servo);
     //     for (int j = 0; j < mult; ++j) {
     //         draw_line_to(&axes, dist * j, axes.Y.pos);
     //         if (j % 2 == 0) {
-    //             pen_up(&servo);
+    //             penup(&servo);
     //         } else {
-    //             pen_down(&servo);
+    //             pendown(&servo);
     //         }
     //     }
     // }
-    // pen_up(&servo);
+    // penup(&servo);
 }
