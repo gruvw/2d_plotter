@@ -4,6 +4,7 @@
 
 #include "../draw/draw.h"
 #include "../draw/hilbert.h"
+#include "../hardware/buzzer.h"
 #include "../hardware/plotter.h"
 #include "../turtle/turtle.h"
 
@@ -17,6 +18,7 @@
 // matches the starting point of the square with the starting and ending point of the circle
 void square_inscribe_circle(Plotter * plotter) {
     draw_line_to(plotter->axes, AREA_SIDE / 2, 0);
+    play_ready_sound();
     limit_wait();
 
     pendown(plotter->pen);
@@ -28,15 +30,18 @@ void square_inscribe_circle(Plotter * plotter) {
     draw_line_to(plotter->axes, AREA_SIDE / 2, 0);
 
     draw_circle(plotter->axes, AREA_SIDE / 2, 0, CIRCLE_PRECISION);
+    play_done_sound();
 }
 
 // Draws a Hilbert spacing filling curve on the whole drawing area
 void hilbert_filling(Plotter * plotter) {
+    play_ready_sound();
     limit_wait();
 
     pendown(plotter->pen);
 
     draw_hilbert(plotter->axes, AREA_SIDE, HILBERT_LEVEL);
+    play_done_sound();
 }
 
 // Launches the turtle REPL
@@ -46,6 +51,7 @@ void turtle_REPL(Plotter * plotter) {
 
     // Move to center of drawing area
     draw_line_to(plotter->axes, AREA_SIDE / 2, AREA_SIDE / 2);
+    play_ready_sound();
 
     turtle_main(&turtle);
 }
@@ -57,6 +63,7 @@ void start() {
     Plotter plotter = {&axes, &servo};
 
     // Moves to origin
+    play_start_sound();
     penup(plotter.pen);
     origin(plotter.axes);
 
