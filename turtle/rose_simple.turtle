@@ -6,3 +6,5 @@ repeat 5 [
     ]
     right 72
 ]
+
+penup

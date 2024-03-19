@@ -71,25 +71,7 @@ void start() {
     play_start_sound();
     origin(plotter.axes);
 
-    square_inscribe_circle(&plotter);
+    // square_inscribe_circle(&plotter);
     // hilbert_filling(&plotter);
     // turtle_REPL(&plotter);
-
-    // Lifting pen rsidue test
-    // const int mult = 10;
-    // const int dist = AREA_SIDE / mult;
-    // for (int i = 0; i < mult; ++i) {
-    //     penup(&servo);
-    //     draw_line_to(&axes, 0, dist * i);
-    //     pendown(&servo);
-    //     for (int j = 0; j < mult; ++j) {
-    //         draw_line_to(&axes, dist * j, axes.Y.pos);
-    //         if (j % 2 == 0) {
-    //             penup(&servo);
-    //         } else {
-    //             pendown(&servo);
-    //         }
-    //     }
-    // }
-    // penup(&servo);
 }
