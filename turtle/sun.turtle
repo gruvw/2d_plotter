@@ -1,14 +1,14 @@
 penup
 home
-
 setheading 270
+
 forward 800
 setheading 0
 pendown
-
 circle 800
 penup
-left 90
+
+right 90
 forward 800
 setheading 270
 

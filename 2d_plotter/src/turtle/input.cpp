@@ -5,7 +5,7 @@ extern "C" {
 }
 
 // Standard input settings
-#define MAX_WORD_LEN 12
+#define MAX_WORD_LEN 20
 
 #define SPACE ' '
 #define NEW_LINE '\n'

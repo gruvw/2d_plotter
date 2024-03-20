@@ -73,5 +73,5 @@ void start() {
 
     // square_inscribe_circle(&plotter);
     // hilbert_filling(&plotter);
-    // turtle_REPL(&plotter);
+    turtle_REPL(&plotter);
 }

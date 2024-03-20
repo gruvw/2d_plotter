@@ -1,34 +1,40 @@
 penup home right 90 forward 900 left 180 pendown
+
 forward 600
 left 45
 forward 780
 right 45
 forward 600
+
 right 45
 forward 780
 right 90
 forward 780
 right 45
+
 forward 600
 right 45
 forward 360
-
 penup
+
 right 45
 forward 600
 left 45
 pendown
-
 forward 360
+
 left 45
 forward 600
 left 45
 forward 780
 left 90
+
 forward 780
 left 45
 forward 600
 left 45
 forward 780
+
 right 45
 forward 600
+penup
