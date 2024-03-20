@@ -1,19 +1,19 @@
 penup home
 
-setheading 90 forward 200
+setheading 90 forward 800
 setheading 270 left 45
 pendown
 
-forward 250
+forward 1258
 
-repeat 100 [
-    forward 4 right 2
+repeat 200 [
+    forward 10 right 1
 ]
 
 left 128
 
-repeat 100 [
-    forward 4 right 2
+repeat 200 [
+    forward 10 right 1
 ]
 
-forward 259
+forward 1280

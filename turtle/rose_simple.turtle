@@ -2,7 +2,7 @@ penup home pendown
 
 repeat 5 [
     repeat 360 [
-        forward 10 right 1
+        forward 12 right 1
     ]
     right 72
 ]

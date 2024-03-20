@@ -1,7 +1,7 @@
 penup home pendown
 
 repeat 5 [
-    circle 600
+    circle 700
     right 72
 ]
 

@@ -8,7 +8,7 @@ pendown
 
 circle 800
 penup
-right 90
+left 90
 forward 800
 setheading 270
 
