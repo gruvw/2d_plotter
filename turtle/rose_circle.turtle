@@ -1,8 +1,8 @@
-penup home pendown
+penup home setheading 0
 
+pendown
 repeat 5 [
     circle 700
     right 72
 ]
-
 penup

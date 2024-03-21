@@ -1,5 +1,6 @@
-penup home right 90 forward 900 left 180 pendown
+penup home setheading 135 right 90 forward 900 left 180
 
+pendown
 forward 600
 left 45
 forward 780
