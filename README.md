@@ -6,11 +6,22 @@ EPFL BA6 / MIT CS-358 / 2D Plotter Robot / Personal Project
 
 This **2D Plotter Robot** is a device that can draw user defined drawings on a small sheet of paper based on a provided computer program.
 
+<img src="docs/plotter/plotter_iso_front.png" width="600">
+
+**Note**: this README was also made available as a PDF for portability purposes (see `README.pdf`). However, the video won't work and the layout is not perfect on PDF version.
+
 ## Result
 
 Here are a few pictures showing the final plotter from different angles.
 
-<!-- TODO  add plotter pictures -->
+<div>
+    <img src="docs/plotter/potter_top.png" height="200">
+    <img src="docs/plotter/potter_side.png" height="200">
+    <img src="docs/plotter/potter_iso_front.png" height="200">
+    <img src="docs/plotter/potter_iso_back.png" height="200">
+    <img src="docs/plotter/potter_cable.png" height="200">
+    <img src="docs/plotter/potter_side.png" height="200">
+</div>
 
 ### Drawings
 
@@ -20,10 +31,16 @@ You can see below some pictures of the drawings that the plotter achieved to dra
     <img src="docs/drawings/inscribed.png" width="170">
     <img src="docs/drawings/hilbert.png" width="170">
     <img src="docs/drawings/rose.png" width="170">
+    <img src="docs/drawings/heart.png" width="170">
+    <img src="docs/drawings/magic_s.png" width="170">
     <img src="docs/drawings/sun.png" width="170">
     <img src="docs/drawings/holder_test.png" width="170">
 </div>
-<!-- TODO add drawing of magic S -->
+
+Most of the drawings have an impressive precision.
+However, I noticed a small loss of precision when drawing with the 3D printed dynamic penholder.
+This is due to a small amount of play that occurs with the moving piece slightly tilting the pen.
+It is not noticeable for most of the drawings.
 
 ### Video Demonstration
 
